@@ -4,8 +4,8 @@ model User {
   password String
   role     Role   @default(USER)
 
-  profiles        Profile?
-  bodyMeasurement BodyMeasurement?
+  profile     Profile?
+  measurement BodyMeasurement?
 
   orders   Order[]
   recipes  Recipe[]
