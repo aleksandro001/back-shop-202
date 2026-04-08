@@ -1,4 +1,5 @@
 import {Field, Int, ObjectType, registerEnumType} from '@nestjs/graphql';
+import { BodyMeasurement } from 'prisma/generated/prisma/browser';
 import {
   ActivityLevel,
   Gender,
@@ -12,10 +13,10 @@ registerEnumType(ActivityLevel, { name: 'ActivityLevel' });
 registerEnumType(NutritionGoal, { name: 'NutritionGoal' });
 
 @ObjectType()
-export class BodyMeasurementModel {
+export class BodyMeasurementModel implements Partial<BodyMeasurement>{
   @Field()
   id: string;
-
+  
   @Field(() => Int, { nullable: true })
   heightCm?: number;
 

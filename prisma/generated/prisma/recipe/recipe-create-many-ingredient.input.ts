@@ -1,0 +1,34 @@
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { Int } from '@nestjs/graphql';
+
+@InputType()
+export class RecipeCreateManyIngredientInput {
+
+    @Field(() => String, {nullable:true})
+    id?: string;
+
+    @Field(() => String, {nullable:false})
+    title!: string;
+
+    @Field(() => String, {nullable:false})
+    description!: string;
+
+    @Field(() => Int, {nullable:false})
+    calories!: number;
+
+    @Field(() => Int, {nullable:false})
+    cookingTime!: number;
+
+    @Field(() => String, {nullable:false})
+    difficulty!: string;
+
+    @Field(() => String, {nullable:false})
+    authorId!: string;
+
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    updatedAt?: Date | string;
+}
