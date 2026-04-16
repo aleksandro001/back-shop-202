@@ -29,11 +29,11 @@ model Ingredient {
   name        String
   defaultUnit Unit   @map("default_unit")
 
-  recipes Recipe[]
-
-  createdAt         DateTime           @default(now()) @map("created_at")
-  updatedAt         DateTime           @updatedAt @map("updated_at")
+  recipes           Recipe[]
   recipeIngredients RecipeIngredient[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("ingredients")
 }
@@ -42,11 +42,11 @@ model RecipeIngredient {
   id String @id @default(cuid())
 
   name     String
-  iconUrl  String  @map("icon_url")
+  iconUrl  String @map("icon_url")
   content  String
-  quantity Decimal
+  quantity Float
   unit     Unit
-  price    Decimal
+  price    String
 
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   recipeId String @map("recipe_id")

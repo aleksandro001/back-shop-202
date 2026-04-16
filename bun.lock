@@ -18,13 +18,16 @@
         "@prisma/client": "^7.5.0",
         "@types/pg": "8.11.11",
         "argon2": "^0.44.0",
+        "class-transformer": "^0.5.1",
         "cookie-parser": "^1.4.7",
         "graphql": "^16.13.1",
+        "graphql-scalars": "^1.25.0",
         "graphql-type-json": "^0.3.2",
         "passport-jwt": "^4.0.1",
         "pg": "8.13.1",
         "prisma": "^7.5.0",
         "prisma-graphql": "^0.0.1",
+        "prisma-graphql-type-decimal": "^4.0.2",
         "reflect-metadata": "^0.2.2",
         "rxjs": "^7.8.1",
       },
@@ -746,6 +749,8 @@
 
     "cjs-module-lexer": ["cjs-module-lexer@2.2.0", "", {}, "sha512-4bHTS2YuzUvtoLjdy+98ykbNB5jS0+07EvFNXerqZQJ89F7DI6ET7OQo/HJuW6K0aVsKA9hj9/RVb2kQVOrPDQ=="],
 
+    "class-transformer": ["class-transformer@0.5.1", "", {}, "sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw=="],
+
     "cli-cursor": ["cli-cursor@3.1.0", "", { "dependencies": { "restore-cursor": "^3.1.0" } }, "sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw=="],
 
     "cli-spinners": ["cli-spinners@2.9.2", "", {}, "sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg=="],
@@ -1033,6 +1038,8 @@
     "graphmatch": ["graphmatch@1.1.1", "", {}, "sha512-5ykVn/EXM1hF0XCaWh05VbYvEiOL2lY1kBxZtaYsyvjp7cmWOU1XsAdfQBwClraEofXDT197lFbXOEVMHpvQOg=="],
 
     "graphql": ["graphql@16.13.1", "", {}, "sha512-gGgrVCoDKlIZ8fIqXBBb0pPKqDgki0Z/FSKNiQzSGj2uEYHr1tq5wmBegGwJx6QB5S5cM0khSBpi/JFHMCvsmQ=="],
+
+    "graphql-scalars": ["graphql-scalars@1.25.0", "", { "dependencies": { "tslib": "^2.5.0" }, "peerDependencies": { "graphql": "^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0" } }, "sha512-b0xyXZeRFkne4Eq7NAnL400gStGqG/Sx9VqX0A05nHyEbv57UJnWKsjNnrpVqv5e/8N1MUxkt0wwcRXbiyKcFg=="],
 
     "graphql-tag": ["graphql-tag@2.12.6", "", { "dependencies": { "tslib": "^2.1.0" }, "peerDependencies": { "graphql": "^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0" } }, "sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg=="],
 
@@ -1447,6 +1454,8 @@
     "prisma": ["prisma@7.5.0", "", { "dependencies": { "@prisma/config": "7.5.0", "@prisma/dev": "0.20.0", "@prisma/engines": "7.5.0", "@prisma/studio-core": "0.21.1", "mysql2": "3.15.3", "postgres": "3.4.7" }, "peerDependencies": { "better-sqlite3": ">=9.0.0", "typescript": ">=5.4.0" }, "optionalPeers": ["better-sqlite3", "typescript"], "bin": { "prisma": "build/index.js" } }, "sha512-n30qZpWehaYQzigLjmuPisyEsvOzHt7bZeRyg8gZ5DvJo9FGjD+gNaY59Ns3hlLD5/jZH5GBeftIss0jDbUoLg=="],
 
     "prisma-graphql": ["prisma-graphql@0.0.1", "", {}, "sha512-5woLMXatl6nWPjYUTSirieTXhWaLZ89tvR9/lsL3QhG7odYjt/Hd86EIJmDSn4dEJZi42LuALptqOK7oupEqIw=="],
+
+    "prisma-graphql-type-decimal": ["prisma-graphql-type-decimal@4.0.2", "", { "peerDependencies": { "@prisma/client": "7", "@prisma/client-runtime-utils": "7", "graphql": "16" } }, "sha512-t6phv7G2+OVXiI337R5kbCl9Eua/E1Mq3FIZAyzhJOkOh+L33H1tJIiY5bVC8uUzOnJBe24Xh+ZwyWItuWfcnA=="],
 
     "prisma-nestjs-graphql": ["prisma-nestjs-graphql@21.2.0", "", { "dependencies": { "@prisma/generator-helper": "5 - 6", "await-event-emitter": "^2.0.2", "filenamify": "4.X", "flat": "5.X", "get-relative-path": "^1.0.2", "graceful-fs": "^4.2.11", "json5": "^2.2.3", "lodash": "^4.17.21", "outmatch": "^1.0.0", "pluralize": "^8.0.0", "pupa": "2.X", "ts-morph": "11 - 16" }, "bin": { "prisma-nestjs-graphql": "bin.js" } }, "sha512-Mkb4brKW8NF3f7fq+H4ypdbbESxDnWdaszss2OIBxqutPV8N7DttdbKlmLnxo3Srk6fgW58nYQ4H5PJRKqKZxw=="],
 

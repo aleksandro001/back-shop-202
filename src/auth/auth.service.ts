@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthInput } from './auth.input';
 import { hash, verify } from 'argon2';
-import { IAuthTokenData } from './auth.interface';
+import { TAuthTokenData } from './auth.interface';
 import { UsersService } from 'src/users/users.service';
 import { Response } from 'express';
 import { isDev } from 'src/utils/is-dev.utils';
@@ -58,7 +58,7 @@ return {user, ...tokens};
 }
 
 async getNewTokens(refreshToken: string) {
-  const result = await this.jwt.verifyAsync<Pick<IAuthTokenData, 'id'>>(refreshToken)
+  const result = await this.jwt.verifyAsync<Pick<TAuthTokenData, 'id'>>(refreshToken)
   if (!result) {
     throw new BadRequestException('Invalid refresh token');
   }
@@ -86,7 +86,7 @@ private async validateUser(input: AuthInput){
   return user;
 }
 
-  private generateTokens(data: IAuthTokenData) {
+  private generateTokens(data: TAuthTokenData) {
     const accessToken = this.jwt.sign(data, {
       expiresIn: '1h',
     });
