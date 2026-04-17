@@ -4,8 +4,8 @@ import { IngredientWhereInput } from './ingredient-where.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { EnumUnitFilter } from '../prisma/enum-unit-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
-import { RecipeListRelationFilter } from '../recipe/recipe-list-relation-filter.input';
 import { RecipeIngredientListRelationFilter } from '../recipe-ingredient/recipe-ingredient-list-relation-filter.input';
+import { RecipeListRelationFilter } from '../recipe/recipe-list-relation-filter.input';
 
 @InputType()
 export class IngredientWhereUniqueInput {
@@ -34,9 +34,9 @@ export class IngredientWhereUniqueInput {
     @Field(() => DateTimeFilter, {nullable:true})
     updatedAt?: DateTimeFilter;
 
-    @Field(() => RecipeListRelationFilter, {nullable:true})
-    recipes?: RecipeListRelationFilter;
-
     @Field(() => RecipeIngredientListRelationFilter, {nullable:true})
     recipeIngredients?: RecipeIngredientListRelationFilter;
+
+    @Field(() => RecipeListRelationFilter, {nullable:true})
+    recipes?: RecipeListRelationFilter;
 }

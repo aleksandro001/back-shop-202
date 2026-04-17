@@ -2,8 +2,8 @@ import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
 import { Unit } from '../prisma/unit.enum';
-import { Recipe } from '../recipe/recipe.model';
 import { RecipeIngredient } from '../recipe-ingredient/recipe-ingredient.model';
+import { Recipe } from '../recipe/recipe.model';
 
 @ObjectType()
 export class Ingredient {
@@ -23,9 +23,9 @@ export class Ingredient {
     @Field(() => Date, {nullable:false})
     updatedAt!: Date;
 
-    @Field(() => [Recipe], {nullable:true})
-    recipes?: Array<Recipe>;
-
     @Field(() => [RecipeIngredient], {nullable:true})
     recipeIngredients?: Array<RecipeIngredient>;
+
+    @Field(() => [Recipe], {nullable:true})
+    recipes?: Array<Recipe>;
 }
