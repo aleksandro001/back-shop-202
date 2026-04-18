@@ -11,7 +11,7 @@ export class RecipeUpsertWithWhereUniqueWithoutIngredientInput {
 
     @Field(() => RecipeWhereUniqueInput, {nullable:false})
     @Type(() => RecipeWhereUniqueInput)
-    where!: Prisma.AtLeast<RecipeWhereUniqueInput, 'id'>;
+    where!: Prisma.AtLeast<RecipeWhereUniqueInput, 'id' | 'slug'>;
 
     @Field(() => RecipeUpdateWithoutIngredientInput, {nullable:false})
     @Type(() => RecipeUpdateWithoutIngredientInput)

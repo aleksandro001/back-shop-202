@@ -5,17 +5,22 @@ import { StringFilter } from '../prisma/string-filter.input';
 import { IntFilter } from '../prisma/int-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { UserScalarRelationFilter } from '../user/user-scalar-relation-filter.input';
-import { IngredientScalarRelationFilter } from '../ingredient/ingredient-scalar-relation-filter.input';
-import { RecipeIngredientListRelationFilter } from '../recipe-ingredient/recipe-ingredient-list-relation-filter.input';
+import { NutritionFactScalarRelationFilter } from '../nutrition-fact/nutrition-fact-scalar-relation-filter.input';
+import { RecipeTegListRelationFilter } from '../recipe-teg/recipe-teg-list-relation-filter.input';
 import { RecipeStepListRelationFilter } from '../recipe-step/recipe-step-list-relation-filter.input';
-import { CommentListRelationFilter } from '../comment/comment-list-relation-filter.input';
+import { RecipeIngredientListRelationFilter } from '../recipe-ingredient/recipe-ingredient-list-relation-filter.input';
 import { LikeListRelationFilter } from '../like/like-list-relation-filter.input';
+import { CommentListRelationFilter } from '../comment/comment-list-relation-filter.input';
+import { IngredientScalarRelationFilter } from '../ingredient/ingredient-scalar-relation-filter.input';
 
 @InputType()
 export class RecipeWhereUniqueInput {
 
     @Field(() => String, {nullable:true})
     id?: string;
+
+    @Field(() => String, {nullable:true})
+    slug?: string;
 
     @Field(() => [RecipeWhereInput], {nullable:true})
     AND?: Array<RecipeWhereInput>;
@@ -56,18 +61,24 @@ export class RecipeWhereUniqueInput {
     @Field(() => UserScalarRelationFilter, {nullable:true})
     author?: UserScalarRelationFilter;
 
-    @Field(() => IngredientScalarRelationFilter, {nullable:true})
-    ingredient?: IngredientScalarRelationFilter;
+    @Field(() => NutritionFactScalarRelationFilter, {nullable:true})
+    nutritionFact?: NutritionFactScalarRelationFilter;
 
-    @Field(() => RecipeIngredientListRelationFilter, {nullable:true})
-    recipeIngredients?: RecipeIngredientListRelationFilter;
+    @Field(() => RecipeTegListRelationFilter, {nullable:true})
+    tags?: RecipeTegListRelationFilter;
 
     @Field(() => RecipeStepListRelationFilter, {nullable:true})
     recipeSteps?: RecipeStepListRelationFilter;
 
-    @Field(() => CommentListRelationFilter, {nullable:true})
-    comments?: CommentListRelationFilter;
+    @Field(() => RecipeIngredientListRelationFilter, {nullable:true})
+    recipeIngredients?: RecipeIngredientListRelationFilter;
 
     @Field(() => LikeListRelationFilter, {nullable:true})
     likes?: LikeListRelationFilter;
+
+    @Field(() => CommentListRelationFilter, {nullable:true})
+    comments?: CommentListRelationFilter;
+
+    @Field(() => IngredientScalarRelationFilter, {nullable:true})
+    ingredient?: IngredientScalarRelationFilter;
 }

@@ -1,7 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
-import { Unit } from '../prisma/unit.enum';
 import { RecipeIngredient } from '../recipe-ingredient/recipe-ingredient.model';
 import { Recipe } from '../recipe/recipe.model';
 
@@ -14,8 +13,11 @@ export class Ingredient {
     @Field(() => String, {nullable:false})
     name!: string;
 
-    @Field(() => Unit, {nullable:false})
-    defaultUnit!: `${Unit}`;
+    @Field(() => String, {nullable:false})
+    iconUrl!: string;
+
+    @Field(() => String, {nullable:false})
+    content!: string;
 
     @Field(() => Date, {nullable:false})
     createdAt!: Date;

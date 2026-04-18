@@ -3,17 +3,22 @@ import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
 import { SortOrderInput } from '../prisma/sort-order.input';
 import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
-import { IngredientOrderByWithRelationInput } from '../ingredient/ingredient-order-by-with-relation.input';
-import { RecipeIngredientOrderByRelationAggregateInput } from '../recipe-ingredient/recipe-ingredient-order-by-relation-aggregate.input';
+import { NutritionFactOrderByWithRelationInput } from '../nutrition-fact/nutrition-fact-order-by-with-relation.input';
+import { RecipeTegOrderByRelationAggregateInput } from '../recipe-teg/recipe-teg-order-by-relation-aggregate.input';
 import { RecipeStepOrderByRelationAggregateInput } from '../recipe-step/recipe-step-order-by-relation-aggregate.input';
-import { CommentOrderByRelationAggregateInput } from '../comment/comment-order-by-relation-aggregate.input';
+import { RecipeIngredientOrderByRelationAggregateInput } from '../recipe-ingredient/recipe-ingredient-order-by-relation-aggregate.input';
 import { LikeOrderByRelationAggregateInput } from '../like/like-order-by-relation-aggregate.input';
+import { CommentOrderByRelationAggregateInput } from '../comment/comment-order-by-relation-aggregate.input';
+import { IngredientOrderByWithRelationInput } from '../ingredient/ingredient-order-by-with-relation.input';
 
 @InputType()
 export class RecipeOrderByWithRelationInput {
 
     @Field(() => SortOrder, {nullable:true})
     id?: `${SortOrder}`;
+
+    @Field(() => SortOrder, {nullable:true})
+    slug?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
     title?: `${SortOrder}`;
@@ -45,18 +50,24 @@ export class RecipeOrderByWithRelationInput {
     @Field(() => UserOrderByWithRelationInput, {nullable:true})
     author?: UserOrderByWithRelationInput;
 
-    @Field(() => IngredientOrderByWithRelationInput, {nullable:true})
-    ingredient?: IngredientOrderByWithRelationInput;
+    @Field(() => NutritionFactOrderByWithRelationInput, {nullable:true})
+    nutritionFact?: NutritionFactOrderByWithRelationInput;
 
-    @Field(() => RecipeIngredientOrderByRelationAggregateInput, {nullable:true})
-    recipeIngredients?: RecipeIngredientOrderByRelationAggregateInput;
+    @Field(() => RecipeTegOrderByRelationAggregateInput, {nullable:true})
+    tags?: RecipeTegOrderByRelationAggregateInput;
 
     @Field(() => RecipeStepOrderByRelationAggregateInput, {nullable:true})
     recipeSteps?: RecipeStepOrderByRelationAggregateInput;
 
-    @Field(() => CommentOrderByRelationAggregateInput, {nullable:true})
-    comments?: CommentOrderByRelationAggregateInput;
+    @Field(() => RecipeIngredientOrderByRelationAggregateInput, {nullable:true})
+    recipeIngredients?: RecipeIngredientOrderByRelationAggregateInput;
 
     @Field(() => LikeOrderByRelationAggregateInput, {nullable:true})
     likes?: LikeOrderByRelationAggregateInput;
+
+    @Field(() => CommentOrderByRelationAggregateInput, {nullable:true})
+    comments?: CommentOrderByRelationAggregateInput;
+
+    @Field(() => IngredientOrderByWithRelationInput, {nullable:true})
+    ingredient?: IngredientOrderByWithRelationInput;
 }

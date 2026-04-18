@@ -15,6 +15,9 @@ export class RecipeOrderByWithAggregationInput {
     id?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})
+    slug?: `${SortOrder}`;
+
+    @Field(() => SortOrder, {nullable:true})
     title?: `${SortOrder}`;
 
     @Field(() => SortOrder, {nullable:true})

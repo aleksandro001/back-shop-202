@@ -1,8 +1,10 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
-import { RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput } from '../recipe-ingredient/recipe-ingredient-unchecked-create-nested-many-without-recipe.input';
+import { NutritionFactUncheckedCreateNestedOneWithoutRecipeInput } from '../nutrition-fact/nutrition-fact-unchecked-create-nested-one-without-recipe.input';
+import { RecipeTegUncheckedCreateNestedManyWithoutRecipesInput } from '../recipe-teg/recipe-teg-unchecked-create-nested-many-without-recipes.input';
 import { RecipeStepUncheckedCreateNestedManyWithoutRecipeInput } from '../recipe-step/recipe-step-unchecked-create-nested-many-without-recipe.input';
+import { RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput } from '../recipe-ingredient/recipe-ingredient-unchecked-create-nested-many-without-recipe.input';
 import { CommentUncheckedCreateNestedManyWithoutRecipeInput } from '../comment/comment-unchecked-create-nested-many-without-recipe.input';
 
 @InputType()
@@ -10,6 +12,9 @@ export class RecipeUncheckedCreateWithoutLikesInput {
 
     @Field(() => String, {nullable:true})
     id?: string;
+
+    @Field(() => String, {nullable:false})
+    slug!: string;
 
     @Field(() => String, {nullable:false})
     title!: string;
@@ -38,11 +43,17 @@ export class RecipeUncheckedCreateWithoutLikesInput {
     @Field(() => String, {nullable:true})
     ingredientId?: string;
 
-    @Field(() => RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput, {nullable:true})
-    recipeIngredients?: RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput;
+    @Field(() => NutritionFactUncheckedCreateNestedOneWithoutRecipeInput, {nullable:true})
+    nutritionFact?: NutritionFactUncheckedCreateNestedOneWithoutRecipeInput;
+
+    @Field(() => RecipeTegUncheckedCreateNestedManyWithoutRecipesInput, {nullable:true})
+    tags?: RecipeTegUncheckedCreateNestedManyWithoutRecipesInput;
 
     @Field(() => RecipeStepUncheckedCreateNestedManyWithoutRecipeInput, {nullable:true})
     recipeSteps?: RecipeStepUncheckedCreateNestedManyWithoutRecipeInput;
+
+    @Field(() => RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput, {nullable:true})
+    recipeIngredients?: RecipeIngredientUncheckedCreateNestedManyWithoutRecipeInput;
 
     @Field(() => CommentUncheckedCreateNestedManyWithoutRecipeInput, {nullable:true})
     comments?: CommentUncheckedCreateNestedManyWithoutRecipeInput;
