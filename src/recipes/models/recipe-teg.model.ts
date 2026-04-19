@@ -1,6 +1,9 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
+import { ID } from '@nestjs/graphql';
+
 @ObjectType()
-export class IngredientModel {
+export class RecipeTegModel {
 
     @Field(() => ID, {nullable:false})
     id!: string;
@@ -8,17 +11,9 @@ export class IngredientModel {
     @Field(() => String, {nullable:false})
     name!: string;
 
-    @Field(() => String, {nullable:false})
-    iconUrl!: string;
-
-    @Field(() => String, {nullable:false})
-    content!: string;
-
     @Field(() => Date, {nullable:false})
     createdAt!: Date;
 
     @Field(() => Date, {nullable:false})
     updatedAt!: Date;
-
-    
 }

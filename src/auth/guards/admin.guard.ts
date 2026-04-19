@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
     if (user?.role !== Role.ADMIN) {
       throw new ForbiddenError('You do not have permission to access this resource');
     }
-
+    
     return true;
   }
 }

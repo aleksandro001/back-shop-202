@@ -1,41 +1,66 @@
-import { Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RecipesService } from './recipes.service';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { AdminRecipesService } from './admin-recipes.service';
+import { RecipeModel } from './models/recipe.model';
+import { RecipeCreateInput } from './inputs/recipe.input';
+import { CurrentUser } from 'src/auth/decorators/current-user-decorator';
+import { Role } from 'prisma/generated/prisma/enums';
 
 @Resolver()
 export class RecipesResolver {
-  constructor(private readonly recipesService: RecipesService) {}
+  constructor(
+    private readonly recipesService: RecipesService,
+    private readonly adminRecipesService: AdminRecipesService
+  ) {}
 
-  //  @Query(() => [IngredientModel], {
-  //     name: 'ingredients'
-  //   })
-  //   @Auth(Role.ADMIN)
-  //     getAll() {
-  //     return this.ingredientsService.getAll();
-  //   }
+   @Query(() => [RecipeModel], {
+      name: 'recipes'
+    })
+    getAll() {
+      return this.recipesService.getAll()
+    }
+    @Query(() => RecipeModel, {
+      name: 'recipeSlug'
+    })
+    getBySlug(@Args('slug') slug: string){
+      return this.recipesService.getBySlug(slug)
+    }
+
+   @Query(() => [RecipeModel], {
+      name: 'admin-recipes'
+    })
+    @Auth(Role.ADMIN)
+      getAllAdmin() {
+      return this.adminRecipesService.getAll();
+    }
   
-  //     @Query(() => IngredientModel, {
-  //       name: 'ingredientById'
-  //     })
-  //   @Auth(Role.ADMIN)
-  //     getByID(@Args('id') id: string) {
-  //     return this.ingredientsService.getById(id);
-  //   }
+    @Query(() => RecipeModel, {
+      name: 'recipeModel'
+    })
+    @Auth(Role.ADMIN)
+      getByID(@Args('id') id: string) {
+      return this.adminRecipesService.getById(id);
+    }
   
-  //   @Mutation(() => IngredientModel)
-  //   @Auth(Role.ADMIN)
-  //   createIngredient(@Args('input') input: IngredientCreateInput) {
-  //     return this.ingredientsService.create(input);
-  //   }
+    @Mutation(() => RecipeModel)
+    @Auth(Role.ADMIN)
+    createIngredient(
+      @CurrentUser('id') authorId: string,
+      @Args('input') input: RecipeCreateInput
+    ) {
+      return this.adminRecipesService.create(authorId, input);
+    }
   
-  //   @Mutation(() => IngredientModel)
-  //   @Auth(Role.ADMIN)
-  //   updateIngredient(@Args('id') id: string, @Args('input') input: IngredientCreateInput) {
-  //     return this.ingredientsService.update(id, input);
-  //   }
+    @Mutation(() => RecipeModel)
+    @Auth(Role.ADMIN)
+    updateIngredient(@Args('id') id: string, @Args('input') input: RecipeCreateInput) {
+      return this.adminRecipesService.update(id, input);
+    }
     
-  //   @Mutation(() => IngredientModel)
-  //   @Auth(Role.ADMIN)
-  //   deleteIngredientById(@Args('id') id: string) {
-  //     return this.ingredientsService.deleteById(id);
-  //   }
+    @Mutation(() => RecipeModel)
+    @Auth(Role.ADMIN)
+    deleteIngredientById(@Args('id') id: string) {
+      return this.adminRecipesService.deleteById(id);
+    }
 }

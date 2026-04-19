@@ -14,8 +14,10 @@ export class RecipesService {
       
       const recipe = await this.prisma.recipe.findUnique({ 
          where: { slug },
-         include: { recipeSteps: true, recipeIngredients: true } 
-        });
+         include: { recipeSteps: true, recipeIngredients: {
+          include: {ingredient: true 
+         } } 
+        } });
       
       if (!recipe) {
         throw new NotFoundException(`Recipe with slug ${slug} not found`);
