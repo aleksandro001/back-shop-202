@@ -7,15 +7,15 @@ import { IngredientCreateInput } from './inputs/create-ingredients.input';
 export class IngredientsService {
   constructor(private readonly prisma: PrismaService) {}
 
-
   getAll() {
     return this.prisma.ingredient.findMany();
   }
-  
+
   async getById(id: string) {
-    
-    const ingredient = await this.prisma.ingredient.findUnique({ where: { id } });
-    
+    const ingredient = await this.prisma.ingredient.findUnique({
+      where: { id },
+    });
+
     if (!ingredient) {
       throw new NotFoundException(`Ingredient with ID ${id} not found`);
     }
@@ -25,19 +25,18 @@ export class IngredientsService {
 
   create(data: IngredientCreateInput) {
     return this.prisma.ingredient.create({
-      data
+      data,
     });
   }
 
   update(id: string, data: IngredientCreateInput) {
     return this.prisma.ingredient.update({
       where: { id },
-      data
+      data,
     });
   }
 
   deleteById(id: string) {
     return this.prisma.ingredient.delete({ where: { id } });
   }
-
 }

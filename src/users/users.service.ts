@@ -8,41 +8,52 @@ import { UserUpdateInput } from './inputs/user-update.input';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-async findAll() {
+  async findAll() {
     return this.prisma.user.findMany();
   }
 
-async findById(id: string) {
-    return this.prisma.user.findUnique({ 
+  async findById(id: string) {
+    return this.prisma.user.findUnique({
       where: { id },
-    include: {
-      measurement: true,
-      profile: true
-    }
+      include: {
+        measurement: true,
+        profile: true,
+      },
     });
   }
 
   async findByEmail(email: string) {
-    return this.prisma.user.findFirst({ 
-      where: { 
+    return this.prisma.user.findFirst({
+      where: {
         email: {
           equals: email,
-          mode: 'insensitive'
-    } } });
+          mode: 'insensitive',
+        },
+      },
+    });
   }
-  async updateProfile(id: string, input: UserUpdateInput  ) {
+  async updateProfile(id: string, input: UserUpdateInput) {
     const { profile, measurement, password, ...data } = input;
-    const updateMeasurement: Prisma.XOR<Prisma.UserUpdateInput, Prisma.UserUncheckedUpdateInput> = measurement ? {measurement: {
-      upsert: {
-        create: measurement,
-        update: measurement
-      }
-    }} : {};
+    const updateMeasurement: Prisma.XOR<
+      Prisma.UserUpdateInput,
+      Prisma.UserUncheckedUpdateInput
+    > = measurement
+      ? {
+          measurement: {
+            upsert: {
+              create: measurement,
+              update: measurement,
+            },
+          },
+        }
+      : {};
 
-    const hashedPassword = 
-    password && typeof password === 'string' ? {
-      password: await hash(password)
-    } : {}
+    const hashedPassword =
+      password && typeof password === 'string'
+        ? {
+            password: await hash(password),
+          }
+        : {};
 
     const userData: Prisma.UserUpdateInput = {
       ...updateMeasurement,
@@ -93,8 +104,8 @@ async findById(id: string) {
       data: userData,
       include: {
         measurement: true,
-        profile: true
-      }
-    })
+        profile: true,
+      },
+    });
   }
 }

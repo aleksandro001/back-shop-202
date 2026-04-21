@@ -9,19 +9,23 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { get } from 'http';
 import { getGraphQLConfig } from './config/graphql.config';
-
 
 @Module({
   imports: [
-   ConfigModule.forRoot({isGlobal: true}), 
-   GraphQLModule.forRootAsync<ApolloDriverConfig>({
-     driver: ApolloDriver,
+    ConfigModule.forRoot({ isGlobal: true }),
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
       imports: [ConfigModule],
       useFactory: getGraphQLConfig,
       inject: [ConfigService],
-   }),AuthModule, UsersModule, RecipesModule, OrdersModule, PrismaModule],
+    }),
+    AuthModule,
+    UsersModule,
+    RecipesModule,
+    OrdersModule,
+    PrismaModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

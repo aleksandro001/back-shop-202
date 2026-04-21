@@ -1,8 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { User as UserModel } from 'prisma/generated/graphql/user/user.model';
 import type { User as PrismaUser } from 'prisma/generated/prisma/client';
-
-export type { UserModel };
+import { UserProfileModel } from 'src/users/models/user-profile.model';
 
 export type TAuthTokenData = Pick<PrismaUser, 'id' | 'role'>;
 
@@ -18,8 +16,8 @@ export type TGqlContextWithUser = {
 
 @ObjectType()
 export class AuthResponse {
-  @Field(() => UserModel)
-  user!: UserModel;
+  @Field(() => UserProfileModel)
+  user!: UserProfileModel;
 
   @Field()
   accessToken!: string;

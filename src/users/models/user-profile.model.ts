@@ -1,10 +1,10 @@
-import {Field, Int, ObjectType, registerEnumType} from '@nestjs/graphql';
+import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { BodyMeasurement } from 'prisma/generated/prisma/browser';
 import {
   ActivityLevel,
   Gender,
   NutritionGoal,
-  Role
+  Role,
 } from 'prisma/generated/prisma/enums';
 
 registerEnumType(Role, { name: 'Role' });
@@ -13,10 +13,10 @@ registerEnumType(ActivityLevel, { name: 'ActivityLevel' });
 registerEnumType(NutritionGoal, { name: 'NutritionGoal' });
 
 @ObjectType()
-export class BodyMeasurementModel implements Partial<BodyMeasurement>{
+export class BodyMeasurementModel implements Partial<BodyMeasurement> {
   @Field()
   id: string;
-  
+
   @Field(() => Int, { nullable: true })
   heightCm?: number;
 
@@ -31,7 +31,7 @@ export class BodyMeasurementModel implements Partial<BodyMeasurement>{
 
   @Field(() => Int, { nullable: true })
   waistCm?: number;
-  
+
   @Field(() => Int, { nullable: true })
   thighCm?: number;
 
@@ -49,7 +49,7 @@ export class BodyMeasurementModel implements Partial<BodyMeasurement>{
 
   @Field()
   updatedAt: Date;
-} 
+}
 
 @ObjectType()
 export class ProfileModel {
@@ -65,7 +65,7 @@ export class ProfileModel {
   @Field(() => Int, { nullable: true })
   age?: number;
 
-  @Field({nullable: true})
+  @Field({ nullable: true })
   bio?: string;
 
   @Field()
@@ -82,7 +82,7 @@ export class UserProfileModel {
 
   @Field()
   email: string;
-  
+
   @Field(() => Role)
   role: Role;
 
@@ -91,7 +91,7 @@ export class UserProfileModel {
 
   @Field(() => BodyMeasurementModel, { nullable: true })
   measurements?: BodyMeasurementModel;
-  
+
   @Field()
   createdAt: Date;
 
