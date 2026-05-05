@@ -22,8 +22,11 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
-  private EXPIRE_DAY_REFRESH_TOKEN = 3;
-  REFRESH_TOKEN_NAME = 'refreshToken';
+  private readonly EXPIRE_HOURS_ACCESS_TOKEN = 1;
+  readonly ACCESS_TOKEN_NAME = 'accessToken' as const;
+
+  private readonly EXPIRE_DAYS_REFRESH_TOKEN = 3;
+  readonly REFRESH_TOKEN_NAME = 'refreshToken' as const;
 
   async register(input: AuthInput) {
     try {
@@ -121,25 +124,49 @@ export class AuthService {
         id: data.id,
       },
       {
-        expiresIn: `${this.EXPIRE_DAY_REFRESH_TOKEN}d`,
+        expiresIn: `${this.EXPIRE_DAYS_REFRESH_TOKEN}d`,
       },
     );
 
     return { accessToken, refreshToken };
   }
+  toggleAccessTokenCookie(res: Response, token: string | null) {
+    this.toggleAuthTokenCookie({
+      response: res,
+      name: this.ACCESS_TOKEN_NAME,
+      token,
+      expires: new Date(Date.now() + this.EXPIRE_HOURS_ACCESS_TOKEN * 3600000),
+    });
+  }
 
-  toggleRefreshTokenCookie(response: Response, token: string | null) {
+  toggleRefreshTokenCookie(res: Response, token: string | null) {
+    this.toggleAuthTokenCookie({
+      response: res,
+      name: this.REFRESH_TOKEN_NAME,
+      token,
+      expires: new Date(
+        Date.now() + this.EXPIRE_DAYS_REFRESH_TOKEN * 24 * 3600000,
+      ),
+    });
+  }
+  private toggleAuthTokenCookie({
+    response,
+    name,
+    token,
+    expires,
+  }: {
+    response: Response;
+    name: AuthService['ACCESS_TOKEN_NAME'] | AuthService['REFRESH_TOKEN_NAME'];
+    token: string | null;
+    expires: Date;
+  }) {
     const isRemoveCookie = !token;
 
-    const expiresIn = isRemoveCookie
-      ? new Date(0)
-      : new Date(
-          Date.now() + this.EXPIRE_DAY_REFRESH_TOKEN * 24 * 60 * 60 * 1000,
-        );
+    const expiresIn = isRemoveCookie ? new Date(0) : expires;
 
     // expires.setDate(expires.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
 
-    response.cookie(this.REFRESH_TOKEN_NAME, token || '', {
+    response.cookie(name, token || '', {
       httpOnly: true,
       domain: 'localhost',
       expires: expiresIn,

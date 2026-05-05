@@ -9,7 +9,7 @@ import { UserProfileModel } from './models/user-profile.model';
 @Resolver()
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
-  @Query(() => UserProfileModel, { name: 'profile' })
+  @Query(() => UserProfileModel, { name: 'me' })
   @Auth()
   getProfile(@CurrentUser('id') id: string) {
     return this.usersService.findById(id);

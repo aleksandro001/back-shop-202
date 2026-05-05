@@ -18,7 +18,4 @@ export type TGqlContextWithUser = {
 export class AuthResponse {
   @Field(() => UserProfileModel)
   user!: UserProfileModel;
-
-  @Field()
-  accessToken!: string;
 }
