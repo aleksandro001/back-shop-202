@@ -4,11 +4,14 @@ import { AuthResponse } from './auth.interface';
 import { AuthInput } from './auth.input';
 import type { IGqlContext } from 'src/app.interface';
 import { BadRequestException } from '@nestjs/common';
+import { VerifyCaptcha } from './decorators/captcha.decorator';
 
 @Resolver()
 export class AuthResolver {
   constructor(private authService: AuthService) {}
+
   @Mutation(() => AuthResponse)
+  @VerifyCaptcha()
   async login(@Args('data') input: AuthInput, @Context() { res }: IGqlContext) {
     const { refreshToken, accessToken, ...response } =
       await this.authService.login(input);
@@ -18,6 +21,7 @@ export class AuthResolver {
 
     return response;
   }
+  @VerifyCaptcha()
   @Mutation(() => AuthResponse)
   async register(
     @Args('data') input: AuthInput,
