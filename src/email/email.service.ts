@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ResendService } from 'nestjs-resend';
+import VerificationEmail from './templates/verification-email';
+import ResetPassword from './templates/reset-password';
+import { render } from '@react-email/render';
 
 @Injectable()
 export class EmailService {
@@ -12,6 +15,12 @@ export class EmailService {
       html,
     });
   }
-  async sendVerificationEmail(to: string, url: string) {}
-  async sendResetPasswordEmail(to: string, url: string) {}
+  async sendVerificationEmail(to: string, url: string) {
+    const html = await render(VerificationEmail({ url }));
+    return this.send(to, 'Verify your email address', html);
+  }
+  async sendResetPasswordEmail(to: string, url: string) {
+    const html = await render(ResetPassword({ url }));
+    return this.send(to, 'Reset your password', html);
+  }
 }
