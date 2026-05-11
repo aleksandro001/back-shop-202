@@ -9,7 +9,7 @@ export class EmailService {
   constructor(private readonly resend: ResendService) {}
   private async send(to: string, subject: string, html: string) {
     return this.resend.send({
-      from: 'Your app <noreply@yourapp.com>',
+      from: 'onboarding@resend.dev',
       to,
       subject,
       html,

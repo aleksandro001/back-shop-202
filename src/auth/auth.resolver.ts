@@ -1,14 +1,20 @@
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { AuthResponse } from './auth.interface';
-import { AuthInput } from './auth.input';
+import { AuthInput } from './decorators/inputs/auth.input';
 import type { IGqlContext } from 'src/app.interface';
 import { BadRequestException } from '@nestjs/common';
 import { VerifyCaptcha } from './decorators/captcha.decorator';
+import { AuthAccountService } from './auth-account.service';
+import { RequestPasswordResetInput } from './decorators/inputs/reset-password-request.input';
+import { ResetPasswordInput } from './decorators/inputs/reset-password.input';
 
 @Resolver()
 export class AuthResolver {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private authAccountService: AuthAccountService,
+  ) {}
 
   @Mutation(() => AuthResponse)
   @VerifyCaptcha()
@@ -53,6 +59,26 @@ export class AuthResolver {
 
     return response;
   }
+  @Mutation(() => Boolean)
+  async verifyEmail(@Args('token', { type: () => String }) token: string) {
+    return this.authAccountService.verifyEmail(token);
+  }
+
+  @Mutation(() => Boolean)
+  @VerifyCaptcha()
+  async requestPasswordReset(@Args('data') input: RequestPasswordResetInput) {
+    return this.authAccountService.requestPasswordReset(input.email);
+  }
+
+  @Mutation(() => Boolean)
+  @VerifyCaptcha()
+  async resetPassword(@Args('data') input: ResetPasswordInput) {
+    return this.authAccountService.resetPassword(
+      input.token,
+      input.newPassword,
+    );
+  }
+
   @Mutation(() => Boolean)
   logout(@Context() { res, req }: IGqlContext) {
     const initialRefreshToken =

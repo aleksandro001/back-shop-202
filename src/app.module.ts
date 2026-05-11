@@ -14,6 +14,7 @@ import { TurnstileModule } from 'nest-cloudflare-turnstile';
 import { getTurnstileConfig } from './config/turnstile.config';
 import { ResendModule } from 'nestjs-resend';
 import { EmailModule } from './email/email.module';
+import { MediaUploadModule } from './media-upload/media-upload.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -41,6 +42,7 @@ import { EmailModule } from './email/email.module';
     OrdersModule,
     PrismaModule,
     EmailModule,
+    MediaUploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

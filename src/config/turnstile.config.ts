@@ -5,7 +5,9 @@ import { ITurnstileOptions } from 'nest-cloudflare-turnstile';
 export const getTurnstileConfig = (
   configService: ConfigService,
 ): ITurnstileOptions => {
-  const secretKey = configService.getOrThrow<string>('TURNSTILE_SECRET_KEY');
+  const secretKey = configService.getOrThrow<string>(
+    'CLOUDFLARE_TURNSTILE_SECRET_KEY',
+  );
   return {
     secretKey,
     tokenResponse: (req: Request) =>

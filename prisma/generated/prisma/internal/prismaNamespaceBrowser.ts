@@ -226,9 +226,14 @@ export type RecipeTegScalarFieldEnum = (typeof RecipeTegScalarFieldEnum)[keyof t
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  role: 'role',
   email: 'email',
   password: 'password',
-  role: 'role',
+  isEmailVerified: 'isEmailVerified',
+  emailVerificationToken: 'emailVerificationToken',
+  emailVerificationExpiresAt: 'emailVerificationExpiresAt',
+  resetPasswordToken: 'resetPasswordToken',
+  resetPasswordExpiresAt: 'resetPasswordExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
