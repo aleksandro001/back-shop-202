@@ -83,6 +83,9 @@ export class UserProfileModel {
   @Field()
   email: string;
 
+  @Field(() => String)
+  avatarUrl?: string | null;
+
   @Field(() => Role)
   role: Role;
 

@@ -58,7 +58,9 @@ export class UsersService {
     const userData: Prisma.UserUpdateInput = {
       ...updateMeasurement,
       ...hashedPassword,
+      ...updateMeasurement,
       ...(data.email !== undefined ? { email: data.email } : {}),
+      avatarUrl: data.avatarUrl,
     };
 
     if (profile) {
