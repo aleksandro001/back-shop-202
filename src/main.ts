@@ -1,25 +1,21 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import cookieParse from 'cookie-parser';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core'
+import { NestExpressApplication } from '@nestjs/platform-express'
+import cookieParser from 'cookie-parser'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+	const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
-  app.use(cookieParse());
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-    }),
-  );
+	app.use(cookieParser())
 
-  app.enableCors({
-    origin: ['http://localhost:3000'],
-    credentials: true,
-  });
-  app.disable('x-powered-by');
-  await app.listen(process.env.PORT ?? 4200);
+	app.enableCors({
+		origin: ['http://localhost:3000'],
+		credentials: true
+	})
+
+	app.disable('x-powered-by')
+
+	await app.listen(process.env.PORT ?? 4200)
 }
-bootstrap();
+
+void bootstrap()

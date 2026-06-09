@@ -1,16 +1,16 @@
 generator client {
   provider     = "prisma-client"
-  output       = "../generated/prisma"
+  output       = "../generated"
   moduleFormat = "cjs"
 }
 
-// generator nestGraphql {
+// generator nestgraphql {
 //   moduleFormat       = "cjs"
 //   provider           = "node node_modules/prisma-nestjs-graphql"
 //   output             = "../generated/graphql"
 //   prismaClientImport = "prisma/generated/prisma/client"
 
-//   reExport = Directory
+//   reExport = Directories
 
 //   omitModelsCount                       = true
 //   noAtomicOperations                    = true

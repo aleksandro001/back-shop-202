@@ -7,20 +7,20 @@ model User {
 
   password String
 
-  isEmailVerified            Boolean   @default(false) @map("is_email_verified")
-  emailVerificationToken     String?   @map("email_verification_token")
-  emailVerificationExpiresAt DateTime? @map("email_verification_expires_at")
+  isEmailVerified                 Boolean   @default(false) @map("is_email_verified")
+  emailVerificationToken          String?   @map("email_verification_token")
+  emailVerificationTokenExpiresAt DateTime? @map("email_verification_token_expires_at")
 
-  resetPasswordToken     String?   @map("reset_password_token")
-  resetPasswordExpiresAt DateTime? @map("reset_password_expires_at")
+  resetPasswordToken          String?   @map("reset_password_token")
+  resetPasswordTokenExpiresAt DateTime? @map("reset_password_token_expires_at")
 
-  profile     Profile?
-  measurement BodyMeasurement?
+  profile      Profile?
+  measurements BodyMeasurement?
 
-  orders   Order[]
   recipes  Recipe[]
   comments Comment[]
   likes    Like[]
+  orders   Order[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -46,10 +46,11 @@ model Profile {
 }
 
 model BodyMeasurement {
-  id           String @id @default(cuid())
-  heightCm     Int?   @map("height_cm")
-  weightKg     Int?   @map("weight_kg")
-  goalWeightKg Int?   @map("goal_weight_kg")
+  id String @id @default(cuid())
+
+  heightCm     Int? @map("height_cm")
+  weightKg     Int? @map("weight_kg")
+  goalWeightKg Int? @map("goal_weight_kg")
 
   chestCm Int? @map("chest_cm")
   waistCm Int? @map("waist_cm")

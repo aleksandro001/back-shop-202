@@ -1,28 +1,29 @@
-import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthResolver } from './auth.resolver';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { getJwtConfig } from 'src/config/jwt.config';
-import { UsersModule } from 'src/users/users.module';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { PassportModule } from '@nestjs/passport';
-import { EmailModule } from 'src/email/email.module';
-import { AuthAccountService } from './auth-account.service';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
+import { PassportModule } from '@nestjs/passport'
+import { getJwtConfig } from 'src/config/jwt.config'
+import { EmailModule } from 'src/email/email.module'
+import { PrismaModule } from 'src/prisma/prisma.module'
+import { UsersModule } from 'src/users/users.module'
+import { AuthAccountService } from './auth-account.service'
+import './auth.enum'
+import { AuthResolver } from './auth.resolver'
+import { AuthService } from './auth.service'
+import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
-  imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: getJwtConfig,
-    }),
-    UsersModule,
-    EmailModule,
-    PrismaModule,
-  ],
-  providers: [JwtStrategy, AuthService, AuthAccountService, AuthResolver],
+	imports: [
+		PrismaModule,
+		PassportModule.register({ defaultStrategy: 'jwt' }),
+		JwtModule.registerAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: getJwtConfig
+		}),
+		UsersModule,
+		EmailModule
+	],
+	providers: [JwtStrategy, AuthService, AuthAccountService, AuthResolver]
 })
 export class AuthModule {}

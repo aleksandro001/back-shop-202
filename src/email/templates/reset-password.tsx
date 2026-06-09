@@ -1,165 +1,119 @@
 import {
-  Body,
-  Button,
-  Container,
-  Head,
-  Heading,
-  Hr,
-  Html,
-  Link,
-  Preview,
-  Section,
-  Text,
-} from '@react-email/components';
-import type { CSSProperties } from 'react';
+	Body,
+	Button,
+	Container,
+	Head,
+	Html,
+	Link,
+	Preview,
+	Section,
+	Text
+} from '@react-email/components'
 
-export interface ResetPasswordProps {
-  url: string;
-  appName?: string;
-  expiresIn?: string;
+interface Props {
+	url: string
+	appName?: string
 }
 
-export const ResetPassword = ({
-  url,
-  appName = 'Your app',
-  expiresIn = '1 hour',
-}: ResetPasswordProps) => (
-  <Html>
-    <Head />
-    <Preview>Reset your password for {appName}</Preview>
-    <Body style={styles.body}>
-      <Container style={styles.container}>
-        <Section style={styles.header}>
-          <Text style={styles.brand}>{appName}</Text>
-        </Section>
+export default function ResetPasswordEmail({
+	url,
+	appName = 'YourApp'
+}: Props) {
+	return (
+		<Html>
+			<Head />
+			<Preview>Сброс пароля</Preview>
+			<Body style={body}>
+				<Container style={container}>
+					<Section>
+						<Text style={heading}>Сброс пароля</Text>
 
-        <Section style={styles.card}>
-          <Heading style={styles.heading}>Reset your password</Heading>
-          <Text style={styles.text}>
-            We received a request to reset the password for your account. Use
-            the button below to choose a new password.
-          </Text>
+						<Text style={text}>
+							Вы запросили восстановление пароля в {appName}.
+						</Text>
 
-          <Button href={url} style={styles.button}>
-            Reset password
-          </Button>
+						<Text style={text}>
+							Если это были не вы — проигнорируйте письмо.
+						</Text>
 
-          <Text style={styles.hint}>
-            This link expires in {expiresIn}. If you did not request a password
-            reset, you can safely ignore this email.
-          </Text>
+						<Section style={buttonContainer}>
+							<Button
+								href={url}
+								style={button}
+							>
+								Задать новый пароль
+							</Button>
+						</Section>
 
-          <Hr style={styles.divider} />
+						<Text style={textSmall}>Или скопируйте ссылку:</Text>
 
-          <Text style={styles.fallbackText}>
-            If the button does not work, copy and paste this link into your
-            browser:
-          </Text>
-          <Link href={url} style={styles.fallbackLink}>
-            {url}
-          </Link>
-        </Section>
+						<Link
+							href={url}
+							style={link}
+						>
+							{url}
+						</Link>
 
-        <Text style={styles.footer}>
-          You received this email because a password reset was requested for
-          your {appName} account.
-        </Text>
-      </Container>
-    </Body>
-  </Html>
-);
+						<Text style={footer}>Ссылка действительна ограниченное время.</Text>
+					</Section>
+				</Container>
+			</Body>
+		</Html>
+	)
+}
 
-ResetPassword.PreviewProps = {
-  url: 'https://example.com/auth/reset-password?token=example-token',
-  appName: 'Winter Shop',
-  expiresIn: '1 hour',
-} satisfies ResetPasswordProps;
+const body = {
+	backgroundColor: '#f6f9fc',
+	fontFamily: 'Arial, sans-serif'
+}
 
-export default ResetPassword;
+const container = {
+	backgroundColor: '#ffffff',
+	margin: '0 auto',
+	padding: '40px 24px',
+	borderRadius: '8px',
+	maxWidth: '480px'
+}
 
-const fontFamily =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+const heading = {
+	fontSize: '20px',
+	fontWeight: '600',
+	marginBottom: '16px'
+}
 
-const styles = {
-  body: {
-    margin: 0,
-    backgroundColor: '#f5f7fb',
-    fontFamily,
-  },
-  container: {
-    width: '100%',
-    maxWidth: '560px',
-    margin: '0 auto',
-    padding: '32px 16px',
-  },
-  header: {
-    padding: '0 0 16px',
-  },
-  brand: {
-    margin: 0,
-    color: '#111827',
-    fontSize: '18px',
-    fontWeight: 700,
-    lineHeight: '28px',
-  },
-  card: {
-    backgroundColor: '#ffffff',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
-    padding: '32px',
-  },
-  heading: {
-    margin: '0 0 16px',
-    color: '#111827',
-    fontSize: '28px',
-    fontWeight: 700,
-    lineHeight: '36px',
-  },
-  text: {
-    margin: '0 0 24px',
-    color: '#374151',
-    fontSize: '16px',
-    lineHeight: '24px',
-  },
-  button: {
-    display: 'inline-block',
-    backgroundColor: '#2563eb',
-    borderRadius: '6px',
-    color: '#ffffff',
-    fontSize: '15px',
-    fontWeight: 700,
-    lineHeight: '20px',
-    padding: '12px 20px',
-    textDecoration: 'none',
-  },
-  hint: {
-    margin: '24px 0 0',
-    color: '#6b7280',
-    fontSize: '14px',
-    lineHeight: '22px',
-  },
-  divider: {
-    margin: '28px 0',
-    borderColor: '#e5e7eb',
-  },
-  fallbackText: {
-    margin: '0 0 8px',
-    color: '#6b7280',
-    fontSize: '13px',
-    lineHeight: '20px',
-  },
-  fallbackLink: {
-    color: '#2563eb',
-    fontSize: '13px',
-    lineHeight: '20px',
-    overflowWrap: 'break-word',
-    textDecoration: 'underline',
-  },
-  footer: {
-    margin: '20px 0 0',
-    color: '#9ca3af',
-    fontSize: '12px',
-    lineHeight: '18px',
-    textAlign: 'center',
-  },
-} satisfies Record<string, CSSProperties>;
+const text = {
+	fontSize: '14px',
+	lineHeight: '22px',
+	marginBottom: '12px'
+}
+
+const buttonContainer = {
+	textAlign: 'center' as const,
+	margin: '24px 0'
+}
+
+const button = {
+	backgroundColor: '#dc2626',
+	color: '#ffffff',
+	padding: '12px 20px',
+	borderRadius: '6px',
+	textDecoration: 'none',
+	fontSize: '14px'
+}
+
+const link = {
+	fontSize: '12px',
+	color: '#2563eb',
+	wordBreak: 'break-all' as const
+}
+
+const textSmall = {
+	fontSize: '12px',
+	marginBottom: '8px'
+}
+
+const footer = {
+	fontSize: '12px',
+	color: '#6b7280',
+	marginTop: '24px'
+}

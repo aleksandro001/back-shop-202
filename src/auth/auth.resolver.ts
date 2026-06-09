@@ -1,96 +1,107 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AuthService } from './auth.service';
-import { AuthResponse } from './auth.interface';
-import { AuthInput } from './decorators/inputs/auth.input';
-import type { IGqlContext } from 'src/app.interface';
-import { BadRequestException } from '@nestjs/common';
-import { VerifyCaptcha } from './decorators/captcha.decorator';
-import { AuthAccountService } from './auth-account.service';
-import { RequestPasswordResetInput } from './decorators/inputs/reset-password-request.input';
-import { ResetPasswordInput } from './decorators/inputs/reset-password.input';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
+
+import { BadRequestException } from '@nestjs/common'
+import type { IGqlContext } from 'src/app.interface'
+import { AuthAccountService } from './auth-account.service'
+import { AuthResponse } from './auth.interface'
+import { AuthService } from './auth.service'
+import { VerifyCaptcha } from './decorators/captcha.decorator'
+import { AuthInput } from './inputs/auth.input'
+import { RequestPasswordResetInput } from './inputs/reset-password-request.input'
+import { ResetPasswordInput } from './inputs/reset-password.input'
 
 @Resolver()
 export class AuthResolver {
-  constructor(
-    private authService: AuthService,
-    private authAccountService: AuthAccountService,
-  ) {}
+	constructor(
+		private authService: AuthService,
+		private authAccountService: AuthAccountService
+	) {}
 
-  @Mutation(() => AuthResponse)
-  @VerifyCaptcha()
-  async login(@Args('data') input: AuthInput, @Context() { res }: IGqlContext) {
-    const { refreshToken, accessToken, ...response } =
-      await this.authService.login(input);
+	@Mutation(() => AuthResponse)
+	@VerifyCaptcha()
+	async login(
+		@Args('data', { type: () => AuthInput }) input: AuthInput,
+		@Context() { res }: IGqlContext
+	) {
+		const { refreshToken, accessToken, ...response } =
+			await this.authService.login(input)
 
-    this.authService.toggleAccessTokenCookie(res, accessToken);
-    this.authService.toggleRefreshTokenCookie(res, refreshToken);
+		this.authService.toggleAccessTokenCookie(res, accessToken)
+		this.authService.toggleRefreshTokenCookie(res, refreshToken)
 
-    return response;
-  }
-  @VerifyCaptcha()
-  @Mutation(() => AuthResponse)
-  async register(
-    @Args('data') input: AuthInput,
-    @Context() { res }: IGqlContext,
-  ) {
-    const { refreshToken, accessToken, ...response } =
-      await this.authService.register(input);
+		return response
+	}
 
-    this.authService.toggleAccessTokenCookie(res, accessToken);
-    this.authService.toggleRefreshTokenCookie(res, refreshToken);
+	@Mutation(() => AuthResponse)
+	@VerifyCaptcha()
+	async register(
+		@Args('data', { type: () => AuthInput }) input: AuthInput,
+		@Context() { res }: IGqlContext
+	) {
+		const { refreshToken, accessToken, ...response } =
+			await this.authService.register(input)
 
-    return response;
-  }
-  @Query(() => AuthResponse)
-  async newTokens(@Context() { req, res }: IGqlContext) {
-    const initialRefreshToken =
-      req.cookies?.[this.authService.REFRESH_TOKEN_NAME];
+		this.authService.toggleAccessTokenCookie(res, accessToken)
+		this.authService.toggleRefreshTokenCookie(res, refreshToken)
 
-    if (!initialRefreshToken) {
-      this.authService.toggleAccessTokenCookie(res, null);
-      this.authService.toggleRefreshTokenCookie(res, null);
-      throw new BadRequestException('Refresh token is missing');
-    }
-    const { refreshToken, accessToken, ...response } =
-      await this.authService.getNewTokens(initialRefreshToken);
+		return response
+	}
 
-    this.authService.toggleAccessTokenCookie(res, accessToken);
-    this.authService.toggleRefreshTokenCookie(res, refreshToken);
+	@Query(() => AuthResponse)
+	async newTokens(@Context() { req, res }: IGqlContext) {
+		const initialRefreshToken =
+			req.cookies?.[this.authService.REFRESH_TOKEN_NAME]
 
-    return response;
-  }
-  @Mutation(() => Boolean)
-  async verifyEmail(@Args('token', { type: () => String }) token: string) {
-    return this.authAccountService.verifyEmail(token);
-  }
+		if (!initialRefreshToken) {
+			this.authService.toggleAccessTokenCookie(res, null)
+			this.authService.toggleRefreshTokenCookie(res, null)
 
-  @Mutation(() => Boolean)
-  @VerifyCaptcha()
-  async requestPasswordReset(@Args('data') input: RequestPasswordResetInput) {
-    return this.authAccountService.requestPasswordReset(input.email);
-  }
+			throw new BadRequestException('Refresh token is missing')
+		}
 
-  @Mutation(() => Boolean)
-  @VerifyCaptcha()
-  async resetPassword(@Args('data') input: ResetPasswordInput) {
-    return this.authAccountService.resetPassword(
-      input.token,
-      input.newPassword,
-    );
-  }
+		const { refreshToken, accessToken, ...response } =
+			await this.authService.getNewTokens(initialRefreshToken)
 
-  @Mutation(() => Boolean)
-  logout(@Context() { res, req }: IGqlContext) {
-    const initialRefreshToken =
-      req.cookies?.[this.authService.REFRESH_TOKEN_NAME];
+		this.authService.toggleAccessTokenCookie(res, accessToken)
+		this.authService.toggleRefreshTokenCookie(res, refreshToken)
 
-    this.authService.toggleAccessTokenCookie(res, null);
-    this.authService.toggleRefreshTokenCookie(res, null);
+		return response
+	}
 
-    if (!initialRefreshToken) {
-      throw new BadRequestException('Refresh token is missing');
-    }
+	@Mutation(() => Boolean)
+	async verifyEmail(@Args('token', { type: () => String }) token: string) {
+		return this.authAccountService.verifyEmail(token)
+	}
 
-    return true;
-  }
+	@Mutation(() => Boolean)
+	@VerifyCaptcha()
+	async requestPasswordReset(
+		@Args('data', { type: () => RequestPasswordResetInput })
+		input: RequestPasswordResetInput
+	) {
+		return this.authAccountService.requestPasswordReset(input.email)
+	}
+
+	@Mutation(() => Boolean)
+	@VerifyCaptcha()
+	async resetPassword(
+		@Args('data', { type: () => ResetPasswordInput }) input: ResetPasswordInput
+	) {
+		return this.authAccountService.resetPassword(input.token, input.newPassword)
+	}
+
+	@Mutation(() => Boolean)
+	logout(@Context() { res, req }: IGqlContext) {
+		const initialRefreshToken =
+			req.cookies?.[this.authService.REFRESH_TOKEN_NAME]
+
+		this.authService.toggleAccessTokenCookie(res, null)
+		this.authService.toggleRefreshTokenCookie(res, null)
+
+		if (!initialRefreshToken) {
+			throw new BadRequestException('Refresh token is missing')
+		}
+
+		return true
+	}
 }

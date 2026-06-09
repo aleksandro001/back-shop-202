@@ -1,32 +1,35 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UsersService } from './users.service';
-import { CurrentUser } from 'src/auth/decorators/current-user-decorator';
-import { Auth } from 'src/auth/decorators/auth.decorator';
-import { Role } from 'prisma/generated/prisma/enums';
-import { UserUpdateInput } from './inputs/user-update.input';
-import { UserProfileModel } from './models/user-profile.model';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Role } from 'prisma/generated/enums'
+
+import { Auth } from 'src/auth/decorators/auth.decorator'
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
+import { UserUpdateCustomInput } from './inputs/user-update.input'
+import { UserModel } from './models/user.model'
+import { UsersService } from './users.service'
 
 @Resolver()
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
-  @Query(() => UserProfileModel, { name: 'me' })
-  @Auth()
-  getProfile(@CurrentUser('id') id: string) {
-    return this.usersService.findById(id);
-  }
+	constructor(private readonly usersService: UsersService) {}
 
-  @Mutation(() => UserProfileModel)
-  @Auth()
-  updateProfile(
-    @CurrentUser('id') id: string,
-    @Args('data', { type: () => UserUpdateInput }) input: UserUpdateInput,
-  ) {
-    return this.usersService.updateProfile(id, input);
-  }
+	@Query(() => UserModel, { name: 'me' })
+	@Auth()
+	getProfile(@CurrentUser('id') id: string) {
+		return this.usersService.findById(id)
+	}
 
-  @Query(() => [UserProfileModel], { name: 'users' })
-  @Auth(Role.ADMIN)
-  async getUsers() {
-    return this.usersService.findAll();
-  }
+	@Mutation(() => UserModel)
+	@Auth()
+	updateProfile(
+		@CurrentUser('id') id: string,
+		@Args('data') input: UserUpdateCustomInput
+	) {
+		return this.usersService.updateProfile(id, input)
+	}
+
+	/* test */
+	@Query(() => [UserModel], { name: 'users' })
+	@Auth(Role.ADMIN)
+	async getUsers() {
+		return this.usersService.findAll()
+	}
 }

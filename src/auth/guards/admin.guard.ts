@@ -1,21 +1,23 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
-import { ForbiddenError } from '@nestjs/apollo';
-import { Role } from 'prisma/generated/prisma/client';
-import { TGqlContextWithUser } from '../auth.interface';
+import { ForbiddenError } from '@nestjs/apollo'
+import { CanActivate, ExecutionContext } from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
+import { GqlExecutionContext } from '@nestjs/graphql'
+import { Role } from 'prisma/generated/client'
+import { TRequestWithUser } from '../auth.interface'
 
-@Injectable()
 export class AdminGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
-    const ctx = GqlExecutionContext.create(context);
-    const user = ctx.getContext<TGqlContextWithUser>().req.user;
+	constructor(private reflector: Reflector) {}
 
-    if (user?.role !== Role.ADMIN) {
-      throw new ForbiddenError(
-        'You do not have permission to access this resource',
-      );
-    }
+	canActivate(context: ExecutionContext): boolean {
+		const ctx = GqlExecutionContext.create(context)
+		const user = ctx.getContext<{ req: TRequestWithUser }>().req.user
 
-    return true;
-  }
+		if (user?.role !== Role.ADMIN) {
+			throw new ForbiddenError(
+				"You don't have permission to access this resource"
+			)
+		}
+
+		return true
+	}
 }

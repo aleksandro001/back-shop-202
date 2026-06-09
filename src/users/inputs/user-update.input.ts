@@ -1,69 +1,23 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
-import {
-  ActivityLevel,
-  Gender,
-  NutritionGoal,
-} from 'prisma/generated/prisma/enums';
+import { Field, InputType } from '@nestjs/graphql'
+import { BodyMeasurementUpdateInput } from './body-measurement.input'
+import { ProfileUpdateInput } from './profile.input'
 
 @InputType()
-export class ProfileUpdateInput {
-  @Field(() => String, { nullable: true })
-  fullName?: string;
+export class UserUpdateCustomInput {
+	@Field(() => String, { nullable: true })
+	email?: string
 
-  @Field(() => Gender, { nullable: true })
-  gender?: Gender;
+	@Field(() => String, { nullable: true })
+	avatarUrl?: string
 
-  @Field(() => Int, { nullable: true })
-  age?: number;
+	@Field(() => String, { nullable: true })
+	password?: string
 
-  @Field(() => String, { nullable: true })
-  bio?: string;
-}
+	@Field(() => ProfileUpdateInput, { nullable: true })
+	profile?: ProfileUpdateInput
 
-@InputType()
-export class BodyMeasurementUpdateInput {
-  @Field(() => Int, { nullable: true })
-  heightCm?: number;
-
-  @Field(() => Int, { nullable: true })
-  weightKg?: number;
-
-  @Field(() => Int, { nullable: true })
-  goalWeightKg?: number;
-
-  @Field(() => Int, { nullable: true })
-  chestCm?: number;
-
-  @Field(() => Int, { nullable: true })
-  waistCm?: number;
-
-  @Field(() => Int, { nullable: true })
-  thighCm?: number;
-
-  @Field(() => Int, { nullable: true })
-  armCm?: number;
-
-  @Field(() => ActivityLevel, { nullable: true })
-  activityLevel?: ActivityLevel;
-
-  @Field(() => NutritionGoal, { nullable: true })
-  nutritionGoal?: NutritionGoal;
-}
-
-@InputType()
-export class UserUpdateInput {
-  @Field(() => String, { nullable: true })
-  email?: string;
-
-  @Field(() => String, { nullable: true })
-  avatarUrl?: string;
-
-  @Field(() => String, { nullable: true })
-  password?: string;
-
-  @Field(() => ProfileUpdateInput, { nullable: true })
-  profile?: ProfileUpdateInput;
-
-  @Field(() => BodyMeasurementUpdateInput, { nullable: true })
-  measurement?: BodyMeasurementUpdateInput;
+	@Field(() => BodyMeasurementUpdateInput, {
+		nullable: true
+	})
+	measurements?: BodyMeasurementUpdateInput
 }

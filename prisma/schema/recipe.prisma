@@ -1,12 +1,18 @@
 model Recipe {
   id String @id @default(cuid())
 
-  slug        String @unique
+  slug        String     @unique
   title       String
   description String
+  image       String     @default("")
   calories    Int
-  cookingTime Int    @map("cooking_time")
-  difficulty  String
+  cookingTime Int        @map("cooking_time")
+  difficulty  Difficulty
+  mealType    MealType   @default(BREAKFAST)
+  dietaryPreference DietaryPreference @default(VEGETARIAN)
+  healthGoal  HealthGoal @default(WEIGHT_LOSS)
+  cuisine     Cuisine    @default(RUSSIAN)
+  specialOccasion SpecialOccasion @default(HOLIDAY)
 
   views Int @default(0)
 
@@ -15,17 +21,15 @@ model Recipe {
 
   nutritionFact NutritionFact?
 
-  tags              RecipeTeg[]
+  tags              RecipeTag[]
   recipeSteps       RecipeStep[]
   recipeIngredients RecipeIngredient[]
 
   likes    Like[]
   comments Comment[]
 
-  createdAt    DateTime    @default(now()) @map("created_at")
-  updatedAt    DateTime    @updatedAt @map("updated_at")
-  ingredient   Ingredient? @relation(fields: [ingredientId], references: [id])
-  ingredientId String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("recipes")
 }
@@ -42,9 +46,10 @@ model RecipeIngredient {
   ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
   ingredientId String     @map("ingredient_id")
 
-  createdAt  DateTime    @default(now()) @map("created_at")
-  updatedAt  DateTime    @updatedAt @map("updated_at")
   orderItems OrderItem[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@unique([recipeId, ingredientId])
   @@map("recipe_ingredients")
@@ -69,7 +74,7 @@ model RecipeStep {
 model NutritionFact {
   id String @id @default(cuid())
 
-  protein       Decimal
+  proteins      Decimal
   fats          Decimal
   carbohydrates Decimal
   fiber         Decimal
@@ -80,10 +85,10 @@ model NutritionFact {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("nutrition_fact")
+  @@map("nutrition_facts")
 }
 
-model RecipeTeg {
+model RecipeTag {
   id String @id @default(cuid())
 
   name String @unique
@@ -100,4 +105,43 @@ enum Difficulty {
   EASY
   MEDIUM
   HARD
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+  DESSERT
+  DRINKS
+}
+
+enum DietaryPreference {
+  VEGETARIAN
+  LOW_CARB
+  GLUTEN_FREE
+  KETO
+  DAIRY_FREE
+}
+
+enum HealthGoal {
+  WEIGHT_LOSS
+  MUSCLE_GAIN
+  HEART_HEALTH
+}
+
+enum Cuisine {
+  RUSSIAN
+  ITALIAN
+  CHINESE
+  MEXICAN
+  INDIAN
+  FRENCH
+}
+
+enum SpecialOccasion {
+  HOLIDAY
+  BIRTHDAY
+  ANNIVERSARY
+  PARTY
 }
