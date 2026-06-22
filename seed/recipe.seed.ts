@@ -63,6 +63,29 @@ async function ensureLikerPool(maxLikesCount: number) {
 	return users.map(user => user.id)
 }
 
+async function ensureRecipeAuthor() {
+	const author = await prisma.user.upsert({
+		where: {
+			email: 'seed.author@flavorfit.com'
+		},
+		update: {
+			role: Role.ADMIN,
+			isEmailVerified: true
+		},
+		create: {
+			email: 'seed.author@flavorfit.com',
+			password: await hash('seed-author-password'),
+			role: Role.ADMIN,
+			isEmailVerified: true
+		},
+		select: {
+			id: true
+		}
+	})
+
+	return author.id
+}
+
 function buildIngredientCreateData(
 	item: ISeedRecipe['recipeIngredients'][number]
 ) {
@@ -203,14 +226,14 @@ async function upsertRecipe(recipe: ISeedRecipe, authorId: string) {
 				}
 			},
 
-				recipeSteps: {
-					create: recipe.recipeSteps.map(step => ({
-						order: step.order,
-						title: step.title,
-						description: step.description,
-						// image: step.image
-					}))
-				},
+			recipeSteps: {
+				create: recipe.recipeSteps.map(step => ({
+					order: step.order,
+					title: step.title,
+					description: step.description,
+					// image: step.image
+				}))
+			},
 
 			recipeIngredients: {
 				create: recipeIngredients
@@ -257,11 +280,10 @@ async function seedRecipes(authorId: string, likerIds: string[]) {
 }
 
 async function main() {
-	const authorId = 'cmm00hh7z0000lpmbi74bnnt6'
-
 	const allRecipes = [...recommendedRecipes, ...popularRecipes]
 	const maxLikesCount = Math.max(...allRecipes.map(recipe => recipe.likesCount))
 
+	const authorId = await ensureRecipeAuthor()
 	const likerIds = await ensureLikerPool(maxLikesCount)
 
 	await cleanupRecipeData()
