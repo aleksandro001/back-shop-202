@@ -1,18 +1,18 @@
 model Recipe {
   id String @id @default(cuid())
 
-  slug        String     @unique
-  title       String
-  description String
-  image       String     @default("")
-  calories    Int
-  cookingTime Int        @map("cooking_time")
-  difficulty  Difficulty
-  mealType    MealType   @default(BREAKFAST)
+  slug              String            @unique
+  title             String
+  description       String
+  image             String            @default("")
+  calories          Int
+  cookingTime       Int               @map("cooking_time")
+  difficulty        Difficulty
+  mealType          MealType          @default(BREAKFAST)
   dietaryPreference DietaryPreference @default(VEGETARIAN)
-  healthGoal  HealthGoal @default(WEIGHT_LOSS)
-  cuisine     Cuisine    @default(RUSSIAN)
-  specialOccasion SpecialOccasion @default(HOLIDAY)
+  healthGoal        HealthGoal        @default(WEIGHT_LOSS)
+  cuisine           Cuisine           @default(RUSSIAN)
+  specialOccasion   SpecialOccasion   @default(HOLIDAY)
 
   views Int @default(0)
 
@@ -61,6 +61,7 @@ model RecipeStep {
   order       Int
   title       String
   description String
+  image       String @default("")
 
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   recipeId String @map("recipe_id")

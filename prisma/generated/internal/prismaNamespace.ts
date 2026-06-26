@@ -1606,6 +1606,7 @@ export const RecipeStepScalarFieldEnum = {
   order: 'order',
   title: 'title',
   description: 'description',
+  image: 'image',
   recipeId: 'recipeId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

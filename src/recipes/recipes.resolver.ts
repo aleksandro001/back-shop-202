@@ -9,6 +9,7 @@ import { AdminRecipesService } from './admin-recipes.service'
 import { RecipesQueryInput } from './inputs/get-recipes-query.input'
 import { RecipeCreateInput } from './inputs/recipe.input'
 import { RecipeModel } from './models/recipe.model'
+import { GetAllRecipesModel } from './models/get-all-recipes.model'
 
 @Resolver()
 export class RecipesResolver {
@@ -20,7 +21,7 @@ export class RecipesResolver {
 	// get all public with
 	// get by slug
 
-	@Query(() => [RecipeModel], {
+	@Query(() => GetAllRecipesModel, {
 		name: 'recipes'
 	})
 	getAll(@Args('input') input: RecipesQueryInput) {
