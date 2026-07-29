@@ -8,8 +8,8 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { AdminRecipesService } from './admin-recipes.service'
 import { RecipesQueryInput } from './inputs/get-recipes-query.input'
 import { RecipeCreateInput } from './inputs/recipe.input'
-import { RecipeModel } from './models/recipe.model'
 import { GetAllRecipesModel } from './models/get-all-recipes.model'
+import { RecipeModel } from './models/recipe.model'
 
 @Resolver()
 export class RecipesResolver {
@@ -33,6 +33,13 @@ export class RecipesResolver {
 	})
 	getBySlug(@Args('slug') slug: string) {
 		return this.recipesService.getBySlug(slug)
+	}
+
+	@Query(() => RecipeModel, {
+		name: 'randomRecipe'
+	})
+	getRandom() {
+		return this.recipesService.getRandom()
 	}
 
 	@Query(() => [RecipeModel], {

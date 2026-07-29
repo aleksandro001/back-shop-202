@@ -50,6 +50,13 @@ export class ReactionService {
 				recipe: {
 					connect: { id: input.recipeId }
 				}
+			},
+			include: {
+				author: {
+					include: {
+						profile: true
+					}
+				}
 			}
 		})
 	}

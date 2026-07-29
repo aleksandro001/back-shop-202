@@ -7,7 +7,7 @@ import {
 	SpecialOccasion
 } from '../recipe.enum'
 
-export enum RecipeSort {
+enum RecipeSort {
 	NEW = 'new',
 	RECOMMENDED = 'recommended',
 	POPULAR = 'popular'

@@ -32,7 +32,10 @@ export class UsersService {
 				email: {
 					equals: email,
 					mode: 'insensitive'
-				}
+				},
+				// include: {
+				// 	profile: true
+				// }
 			}
 		})
 	}

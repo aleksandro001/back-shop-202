@@ -11,23 +11,42 @@ import { OrderCreateInput } from './inputs/order.input'
 export class OrdersService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	getAllByUserId(userId: string) {
-		return this.prisma.order.findMany({
+	async getAllByUserId(userId: string) {
+		const orders = await this.prisma.order.findMany({
 			where: { userId },
 			orderBy: { createdAt: 'desc' },
 			include: {
 				items: {
 					include: {
-						recipeIngredient: {
-							include: {
-								ingredient: true,
-								recipe: true
-							}
-						}
+						ingredient: true
 					}
 				}
 			}
 		})
+
+		return orders.map(order => ({
+			...order,
+			total: Number(order.total)
+		}))
+	}
+
+	async getByOrderId(orderId: string) {
+		const order = await this.prisma.order.findUnique({
+			where: { orderId },
+			include: {
+				items: {
+					include: {
+						ingredient: true
+					}
+				}
+			}
+		})
+
+		if (!order) {
+			throw new NotFoundException('Order not found')
+		}
+
+		return order
 	}
 
 	async makeOrder(userId: string, input: OrderCreateInput) {
@@ -40,35 +59,31 @@ export class OrdersService {
 			.substring(2, 8)
 			.toUpperCase()
 
-		const recipeIngredientIds = input.items.map(item => item.recipeIngredientId)
+		const ingredientIds = input.items.map(item => item.ingredientId)
 
-		const recipeIngredients = await this.prisma.recipeIngredient.findMany({
-			where: { id: { in: recipeIngredientIds } },
-			include: {
-				ingredient: true
+		const ingredients = await this.prisma.ingredient.findMany({
+			where: {
+				id: { in: ingredientIds }
 			}
 		})
 
-		const ingredientsMap = new Map(recipeIngredients.map(ri => [ri.id, ri]))
+		const ingredientsMap = new Map(ingredients.map(item => [item.id, item]))
 
 		let total = 0
 
 		const itemsWithPrice = input.items.map(item => {
-			const recipeIngredient = ingredientsMap.get(item.recipeIngredientId)
+			const ingredient = ingredientsMap.get(item.ingredientId)
 
-			if (!recipeIngredient) {
-				throw new NotFoundException(
-					`Recipe ingredient ${item.recipeIngredientId} not found`
-				)
+			if (!ingredient) {
+				throw new NotFoundException(`Ingredient ${item.ingredientId} not found`)
 			}
 
-			const price = Number(recipeIngredient.ingredient.price || 0)
-			const itemPrice = price * item.quantity
+			const itemPrice = Number(ingredient.price) * item.quantity
 
 			total += itemPrice
 
 			return {
-				recipeIngredientId: item.recipeIngredientId,
+				ingredientId: item.ingredientId,
 				quantity: item.quantity,
 				price: itemPrice
 			}
@@ -87,11 +102,7 @@ export class OrdersService {
 			include: {
 				items: {
 					include: {
-						recipeIngredient: {
-							include: {
-								ingredient: true
-							}
-						}
+						ingredient: true
 					}
 				}
 			}

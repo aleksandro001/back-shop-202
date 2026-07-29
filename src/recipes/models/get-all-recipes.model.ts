@@ -1,5 +1,5 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql"
-import { RecipeModel } from "./recipe.model"
+import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { RecipeModel } from './recipe.model'
 
 @ObjectType()
 export class GetAllRecipesModel {
@@ -8,7 +8,7 @@ export class GetAllRecipesModel {
 
   @Field(() => Boolean)
   hasMore!: boolean
-  
+
   @Field(() => Int)
   total!: number
 }

@@ -9,5 +9,6 @@
     "javascriptreact",
     "typescript",
     "typescriptreact"
-  ]
+  ],
+  "todo-tree.ripgrep": "/usr/bin/rg"
 }

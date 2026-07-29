@@ -15,6 +15,12 @@ export class OrdersResolver {
 		return this.ordersService.getAllByUserId(userId)
 	}
 
+	@Query(() => OrderModel)
+	@Auth()
+	getByOrderId(@Args('orderId') orderId: string) {
+		return this.ordersService.getByOrderId(orderId)
+	}
+
 	@Mutation(() => OrderModel)
 	@Auth()
 	createOrder(
